@@ -102,7 +102,7 @@ export default function SignUp() {
                 onChange={handleChange}
               />
             </div>
-            <Button type="submit" color="purple" disabled={loading}>
+            <Button type="submit" color="purple" disabled={loading} className="cursor-pointer">
               {loading ? (
                 <>
                   <Spinner color="purple" size="sm" />

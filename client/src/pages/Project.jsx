@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Market() {
+export default function Project() {
   return (
     <div>
       

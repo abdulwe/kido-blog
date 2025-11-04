@@ -40,7 +40,7 @@ await newUser.save();
 }; 
 export const signin = async(req, res, next)=>{
 const {email, password} = req.body;
-if(!username || !password || !email === "" || !password === ""){
+if(!email || !password || !email === "" || !password === ""){
     next(errorHandler(400, "All field are required"));
 
 }

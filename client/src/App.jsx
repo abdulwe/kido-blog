@@ -11,6 +11,7 @@ import SignUp from './pages/SignUp';
 import Signin from './pages/Signin';
 import Header from './Components/Header';
 import FooterComponent from './Components/Footer';
+import NotFound from './pages/Notfound';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
      <Route path='/Dashboard' element={<Dashboard/>}/>
       <Route path='/SignUp' element={<SignUp/>}/>
        <Route path='/Signin' element={<Signin/>}/>
+       <Route path="*" element={<NotFound />} />
  </Routes>
  <FooterComponent/>
  

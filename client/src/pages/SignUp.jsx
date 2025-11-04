@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Alert, Spinner } from "flowbite-react";
 import brand from "../assets/My_BrandLogo_original_-removebg-preview.png";
-import { Label, TextInput, Button, Alert, Spinner } from "flowbite-react";
-import { useState } from "react";
-
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -17,119 +15,151 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.username || !formData.email || !formData.password) {
-      return setErrorMessage("Please fill out all fields.");
+      return setErrorMessage("⚠️ Please fill out all fields.");
     }
+
     try {
       setLoading(true);
       setErrorMessage(null);
       const res = await fetch("/api/auth/signup", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
       const data = await res.json();
       if (data.success === false) {
-        return setErrorMessage(data.message);
+        setLoading(false);
+        return setErrorMessage(data.message || "Signup failed.");
       }
+
       setLoading(false);
-      if(res.ok){
-        navigate('/Signin');
+      if (res.ok) {
+        navigate("/Signin");
       }
-      // Optionally redirect or show success message here
     } catch (error) {
       setErrorMessage(error.message);
       setLoading(false);
-      
     }
   };
 
   return (
-    <div className="min-h-screen mt-20 bg-white dark:bg-gray-900">
-      <div className="flex p-6 max-w-5xl mx-auto flex-col md:flex-row items-center gap-8">
-        {/* Left Side */}
-        <div className="md:w-1/2">
-          <Link to="/" className="flex items-center text-4xl mb-4">
-            <img src={brand} className="h-20 w-auto mr-2" alt="KidoBlog Logo" />
-            <span className="font-bold text-gray-800 dark:text-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center py-10 px-4">
+      <div className="flex flex-col md:flex-row items-center max-w-5xl w-full gap-10">
+        {/* Left Section */}
+        <div className="md:w-1/2 text-center md:text-left space-y-4">
+          <Link
+            to="/"
+            className="flex items-center justify-center md:justify-start"
+          >
+            <img
+              src={brand}
+              alt="KidoBlog Logo"
+              className="h-20 w-auto mr-2"
+            />
+            <span className="text-3xl font-bold text-gray-800 dark:text-white">
               KidoBlog
             </span>
           </Link>
           <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-            Welcome to <strong>KidoBlog</strong> – Where Global News Meets
-            Everyday Living. Stay informed with the latest updates from around
-            the world, covering everything from politics and football to tech
-            and fashion. We also deliver insightful articles, expert parenting
-            tips, kids' lifestyle trends, and educational resources. Our
-            integrated marketplace makes it easy to promote and advertise your
-            products seamlessly. Explore, engage, and elevate with KidoBlog —
-            your destination for content and commerce.
+            Welcome to <strong>KidoBlog</strong> — Where Global News Meets
+            Everyday Living. Stay informed with updates on politics, football,
+            tech, and fashion. Get parenting tips, educational insights, and
+            promote your products easily. Explore, engage, and elevate your
+            experience with KidoBlog.
           </p>
         </div>
 
-        {/* Right Side - Sign Up Form */}
-        <div className="md:w-1/2 w-full bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold text-gray-700 dark:text-white mb-6">
-            Create an Account
+        {/* Right Section - Form */}
+        <div className="md:w-1/2 w-full bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
+          <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-6 text-center">
+            Create Your Account
           </h2>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div>
-              <Label htmlFor="username" value="Username" />
-              <TextInput
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Username
+              </label>
+              <input
                 id="username"
                 type="text"
                 placeholder="Enter username"
                 onChange={handleChange}
+                className="w-full border border-gray-300 dark:border-gray-600 p-2.5 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
               />
             </div>
+
             <div>
-              <Label htmlFor="email" value="Email" />
-              <TextInput
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Email
+              </label>
+              <input
                 id="email"
                 type="email"
                 placeholder="name@company.com"
                 onChange={handleChange}
+                className="w-full border border-gray-300 dark:border-gray-600 p-2.5 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
               />
             </div>
+
             <div>
-              <Label htmlFor="password" value="Password" />
-              <TextInput
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
+                Password
+              </label>
+              <input
                 id="password"
                 type="password"
                 placeholder="Enter password"
                 onChange={handleChange}
+                className="w-full border border-gray-300 dark:border-gray-600 p-2.5 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
               />
             </div>
-            <Button type="submit" color="purple" disabled={loading} className="cursor-pointer">
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-purple-600 text-white w-full py-2.5 rounded-md text-sm font-medium hover:bg-purple-700 transition duration-300 disabled:opacity-70"
+            >
               {loading ? (
-                <>
+                <div className="flex justify-center items-center">
                   <Spinner color="purple" size="sm" />
-                  <span className="pl-3">Loading...</span>
-                </>
+                  <span className="pl-3">Signing Up...</span>
+                </div>
               ) : (
                 "Sign Up"
               )}
-            </Button>
+            </button>
           </form>
-          <p className="text-sm mt-4 text-gray-600 dark:text-gray-400">
+
+          <p className="text-sm mt-4 text-center text-gray-600 dark:text-gray-400">
             Already have an account?{" "}
-            <Link to="/Signin" className="text-purple-800 hover:underline">
+            <Link
+              to="/Signin"
+              className="text-purple-700 dark:text-purple-400 font-semibold hover:underline"
+            >
               Login here
             </Link>
           </p>
-          {/* Error Message */}
-        {errorMessage && (
-          <Alert className="mt-5" color="failure">
-            {errorMessage}
-          </Alert>
-        )}
-        </div>
 
-        
+          {errorMessage && (
+            <Alert className="mt-6" color="failure">
+              {errorMessage}
+            </Alert>
+          )}
+        </div>
       </div>
-      
     </div>
   );
 }
